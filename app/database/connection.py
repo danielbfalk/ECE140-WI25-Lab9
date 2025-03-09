@@ -8,8 +8,8 @@ load_dotenv()
 def get_db_connection():
     try:
         connection = mysql.connector.connect(
-            host=os.getenv("DB_HOST", "mysql-273548e7-ece140a-lab9-dbfalk.l.aivencloud.com"),#host=os.getenv('MYSQL_HOST'),
-            port=int(os.getenv('DB_PORT', 20212)),#port=int(os.getenv('MYSQL_PORT')),
+            host=os.getenv('MYSQL_HOST'),
+            port=int(os.getenv('MYSQL_PORT')),
             user=os.getenv('MYSQL_USER'),
             password=os.getenv('MYSQL_PASSWORD'),
             database=os.getenv('MYSQL_DATABASE'),
