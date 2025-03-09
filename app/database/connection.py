@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+"""
 def get_db_connection():
     try:
         connection = mysql.connector.connect(
@@ -20,6 +21,32 @@ def get_db_connection():
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
         return None
+"""
+
+def get_db_connection():
+    try:
+        ssl_ca_path = os.getenv('MYSQL_SSL_CA')
+        print(f"🔍 Checking SSL CA file at: {ssl_ca_path}")  # Debugging log
+
+        # Check if SSL file exists
+        if not os.path.exists(ssl_ca_path):
+            print(f"❌ SSL CA file not found at {ssl_ca_path}")
+            return None
+
+        connection = mysql.connector.connect(
+            host=os.getenv('MYSQL_HOST'),
+            port=int(os.getenv('MYSQL_PORT')),
+            user=os.getenv('MYSQL_USER'),
+            password=os.getenv('MYSQL_PASSWORD'),
+            database=os.getenv('MYSQL_DATABASE'),
+            ssl_ca=ssl_ca_path,
+            ssl_verify_identity=True
+        )
+        return connection
+    except Error as e:
+        print(f"❌ Error connecting to MySQL: {e}")
+        return None
+
 
 def init_db():
     connection = get_db_connection()
